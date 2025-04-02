@@ -1,5 +1,6 @@
 using Bankapp.Data;
 using Microsoft.AspNetCore.Identity;
+using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bankapp
@@ -8,16 +9,18 @@ namespace Bankapp
     {
         public static void Main(string[] args)
         {
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            builder.Services.AddDbContext<BankAppDataContext>(options =>
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<BankAppDataContext>();
             builder.Services.AddRazorPages();
 
             var app = builder.Build();
