@@ -1,4 +1,3 @@
-using Bankapp.Data;
 using Microsoft.AspNetCore.Identity;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
