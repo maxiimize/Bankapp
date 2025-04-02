@@ -11,13 +11,7 @@ namespace Bankapp
 
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.AddTransient<DataInitializer>();
-            var app = builder.Build();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                scope.ServiceProvider.GetService<DataInitializer>().SeedData();
-            }
+            
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -30,7 +24,14 @@ namespace Bankapp
                 .AddEntityFrameworkStores<BankAppDataContext>();
             builder.Services.AddRazorPages();
 
-            app = builder.Build();
+            builder.Services.AddTransient<DataInitializer>();
+
+            var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                scope.ServiceProvider.GetService<DataInitializer>().SeedData();
+            }
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
