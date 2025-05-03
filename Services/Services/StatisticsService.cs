@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Services.Interfaces;
 using Services.Viewmodels;
 using DataAccessLayer.Models;
@@ -23,17 +21,24 @@ namespace Services.Services
             var totalCustomers = _context.Customers.Count();
             var totalAccounts = _context.Accounts.Count();
 
-            var balancePerCountry = _context.Customers
-                .GroupBy(c => c.Country)
-                .Select(g => new
+            
+            var customerAccounts = _context.Customers
+                .Select(c => new
                 {
-                    Country = g.Key,
-                    TotalBalance = g.SelectMany(c => c.Dispositions)
-                                    .Where(d => d.Account != null)
-                                    .Select(d => d.Account.Balance)
-                                    .Sum()
+                    c.Country,
+                    Accounts = c.Dispositions.Select(d => d.Account).Where(a => a != null).Select(a => new { a.AccountId, a.Balance })
                 })
-                .ToDictionary(x => x.Country, x => x.TotalBalance);
+                .ToList(); 
+
+            var balancePerCountry = customerAccounts
+                .GroupBy(c => c.Country)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.SelectMany(c => c.Accounts)
+                          .GroupBy(a => a.AccountId)
+                          .Select(a => a.First().Balance)
+                          .Sum()
+                );
 
             return new StatisticsVM
             {
@@ -43,5 +48,4 @@ namespace Services.Services
             };
         }
     }
-
 }
