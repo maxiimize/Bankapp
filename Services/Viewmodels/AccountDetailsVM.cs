@@ -1,4 +1,4 @@
-﻿namespace Bankapp.Viewmodels
+﻿namespace Services.Viewmodels
 {
     public class AccountDetailsVM
     {

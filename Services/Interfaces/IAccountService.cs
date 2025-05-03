@@ -1,6 +1,6 @@
-﻿using Bankapp.Viewmodels;
+﻿using Services.Viewmodels;
 
-namespace Bankapp.Interfaces
+namespace Services.Interfaces
 {
     public interface IAccountService
     {
