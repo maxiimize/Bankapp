@@ -19,7 +19,9 @@
                 <input type="text" name="City" value="@Model.City" class="form-control" placeholder="Stad" />
             </div>
             <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100">Sök</button>
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-1"></i> Sök
+                </button>
             </div>
         </form>
 
@@ -59,23 +61,29 @@
 
             <nav>
                 <ul class="pagination justify-content-center">
-                    @if (Model.PageNumber > 1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber - 1)">Föregående</a>
-                        </li>
-                    }
-                    <li class="page-item disabled">
-                        <a class="page-link">@Model.PageNumber</a>
+
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber - 1)">
+                            Föregående
+                        </a>
                     </li>
-                    @if (Model.SearchResult.Items.Count == Model.SearchResult.PageSize)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">Nästa</a>
-                        </li>
-                    }
+
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            Sida @Model.PageNumber av @Math.Max(1, Math.Ceiling((double)Model.SearchResult.TotalItems / Model.SearchResult.PageSize))
+                        </span>
+                    </li>
+
+                    <li class="page-item @(Model.PageNumber * Model.SearchResult.PageSize >= Model.SearchResult.TotalItems ? "disabled" : "")">
+                        <a class="page-link"
+                           href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">
+                            Nästa
+                        </a>
+                    </li>
                 </ul>
             </nav>
+
         }
         else if (!string.IsNullOrWhiteSpace(Model.Name) || !string.IsNullOrWhiteSpace(Model.City))
         {
