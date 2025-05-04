@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Services.Interfaces;
 using Services.Viewmodels;
 using DataAccessLayer.Models;
-
 
 namespace Services.Services
 {
@@ -47,7 +44,7 @@ namespace Services.Services
             return customer;
         }
 
-        public PagedResult<CustomerOverviewVM> SearchCustomers(string name, string city, int pageNumber, int pageSize)
+        public PagedResult<CustomerSearchViewModel> SearchCustomers(string name, string city, int pageNumber, int pageSize)
         {
             var query = _context.Customers.AsQueryable();
 
@@ -64,28 +61,24 @@ namespace Services.Services
                 .OrderBy(c => c.CustomerId)
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
-                .Select(c => new CustomerOverviewVM
+                .Select(c => new CustomerSearchViewModel
                 {
                     CustomerId = c.CustomerId,
-                    Givenname = c.Givenname,
+                    GivenName = c.Givenname,
                     Surname = c.Surname,
-                    Streetaddress = c.Streetaddress,
-                    City = c.City,
-                    TotalBalance = c.Dispositions
-                        .Where(d => d.Account != null)
-                        .Select(d => d.Account.Balance)
-                        .Sum()
-                }).ToList();
+                    NationalId = c.NationalId ?? "",
+                    StreetAddress = c.Streetaddress,
+                    City = c.City
+                })
+                .ToList();
 
-            return new PagedResult<CustomerOverviewVM>
+            return new PagedResult<CustomerSearchViewModel>
             {
-                Results = customers,
-                CurrentPage = pageNumber,
-                TotalPages = totalPages,
-                PageSize = pageSize,
-                TotalCount = totalCount
+                Items = customers,
+                TotalItems = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize
             };
         }
     }
-
 }

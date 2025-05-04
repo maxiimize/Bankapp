@@ -4,41 +4,43 @@
     ViewData["Title"] = "Home page";
 }
 
+
+
+
 <!-- Statistikpaneler -->
 <section class="page-section bg-light" id="dashboard">
-    <div class="container">
-        <div class="text-center">
-            <h2 class="section-heading text-uppercase">Bankens Statistik</h2>
-            <h3 class="section-subheading text-muted">Översikt av vår verksamhet</h3>
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-primary">
+            <div class="card-body">
+                <h5 class="card-title">Antal Kunder</h5>
+                <p class="card-text">@Model.Statistics.TotalCustomers kunder registrerade.</p>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-md-4 mb-4">
-                <div class="card text-white bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title">Antal Kunder</h5>
-                        <p class="card-text">1250 kunder registrerade.</p>
-                    </div>
-                </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-success">
+            <div class="card-body">
+                <h5 class="card-title">Antal Konton</h5>
+                <p class="card-text">@Model.Statistics.TotalAccounts konton öppnade.</p>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="card text-white bg-success">
-                    <div class="card-body">
-                        <h5 class="card-title">Antal Konton</h5>
-                        <p class="card-text">3500 konton öppnade.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 mb-4">
-                <div class="card text-white bg-warning">
-                    <div class="card-body">
-                        <h5 class="card-title">Summa Saldon per Land</h5>
-                        <p class="card-text">Totalt saldo: 2 500 000 USD</p>
-                    </div>
-                </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card text-white bg-warning">
+            <div class="card-body">
+                <h5 class="card-title">Summa Saldon per Land</h5>
+                <p class="card-text">
+                    Totalt saldo: @Model.Statistics.TotalBalancePerCountry.Values.Sum().ToString("C")
+                </p>
             </div>
         </div>
     </div>
 </section>
+
+<!-- Sökknapp-->
+<div class="text-center my-4">
+    <a class="btn btn-primary btn-lg" href="/Customers/Search">Gå till kundsök</a>
+</div>
 
 <!-- Services-->
 <section class="page-section" id="services">
@@ -75,69 +77,9 @@
         </div>
     </div>
 </section>
-<!-- Sökfunktion för kunder -->
-<section class="page-section" id="customer-search">
-    <div class="container">
-        <h2 class="section-heading text-uppercase text-center">Sök Kunder</h2>
-        <form>
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Sök efter namn eller stad" aria-label="Sök efter namn eller stad">
-                <button class="btn btn-outline-secondary" type="submit">Sök</button>
-            </div>
-        </form>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Kundnummer</th>
-                    <th>Personnummer</th>
-                    <th>Namn</th>
-                    <th>Adress</th>
-                    <th>Stad</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>001</td>
-                    <td>1990-01-01</td>
-                    <td>Max Berridge</td>
-                    <td>Exempelvägen 1</td>
-                    <td>Stockholm</td>
-                </tr>
-                <!-- Lägg till fler kunder här -->
-            </tbody>
-        </table>
-        <nav>
-            <ul class="pagination justify-content-center">
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <!-- Lägg till fler sidor här -->
-            </ul>
-        </nav>
-    </div>
-</section>
 
-<!-- Kundinformation -->
-<section class="page-section" id="customer-details">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Kundinformation</h5>
-                        <p><strong>Kundnamn:</strong> Max Berridge</p>
-                        <p><strong>Personnummer:</strong> 1990-01-01</p>
-                        <h6>Konton:</h6>
-                        <ul>
-                            <li>Kontonummer: 12345 | Saldo: 5000 USD</li>
-                            <li>Kontonummer: 67890 | Saldo: 12000 USD</li>
-                        </ul>
-                        <p><strong>Totalt saldo:</strong> 17000 USD</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
+
 
 <!-- Team-->
 <section class="page-section bg-light" id="team">
