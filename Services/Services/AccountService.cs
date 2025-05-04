@@ -18,7 +18,7 @@ namespace Services.Services
             _context = context;
         }
 
-        public AccountDetailsVM GetAccountDetails(int accountId)
+        public AccountDetailsVM GetAccountDetails(int accountId, int skip, int take)
         {
             var account = _context.Accounts
                 .Where(a => a.AccountId == accountId)
@@ -29,8 +29,11 @@ namespace Services.Services
                     Balance = a.Balance,
                     Created = a.Created,
                     CustomerId = a.Dispositions.FirstOrDefault().CustomerId,
+                    TotalTransactionCount = a.Transactions.Count,
                     Transactions = a.Transactions
                         .OrderByDescending(t => t.Date)
+                        .Skip(skip)
+                        .Take(take)
                         .Select(t => new TransactionVM
                         {
                             Date = t.Date,
@@ -38,12 +41,32 @@ namespace Services.Services
                             Type = t.Type,
                             Operation = t.Operation,
                             Bank = t.Bank,
-                            Balance = t.Balance 
+                            Balance = t.Balance
                         }).ToList()
                 }).FirstOrDefault();
 
             return account;
         }
+
+        public List<TransactionVM> GetTransactions(int accountId, int skip, int take)
+        {
+            return _context.Transactions
+                .Where(t => t.AccountId == accountId)
+                .OrderByDescending(t => t.Date)
+                .Skip(skip)
+                .Take(take)
+                .Select(t => new TransactionVM
+                {
+                    Date = t.Date,
+                    Amount = t.Amount,
+                    Type = t.Type,
+                    Operation = t.Operation,
+                    Bank = t.Bank,
+                    Balance = t.Balance
+                }).ToList();
+        }
+
+
 
 
 
