@@ -1,0 +1,49 @@
+﻿@page
+@model Bankapp.Pages.Customers.SearchModel
+
+<h2>Sök kunder</h2>
+
+<form method="get">
+    <input type="text" name="Name" value="@Model.Name" placeholder="Förnamn eller efternamn" />
+    <input type="text" name="City" value="@Model.City" placeholder="Stad" />
+    <button type="submit">Sök</button>
+</form>
+
+@if (Model.SearchResult != null && Model.SearchResult.Items.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Kundnummer</th>
+                <th>Personnummer</th>
+                <th>Namn</th>
+                <th>Adress</th>
+                <th>Stad</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var customer in Model.SearchResult.Items)
+            {
+                <tr>
+                    <td>@customer.CustomerId</td>
+                    <td>@customer.NationalId</td>
+                    <td>@customer.GivenName @customer.Surname</td>
+                    <td>@customer.StreetAddress</td>
+                    <td>@customer.City</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div>
+        Sida @Model.PageNumber
+        @if (Model.SearchResult.Items.Count == 50)
+        {
+            <a href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">Nästa sida</a>
+        }
+    </div>
+}
+else
+{
+    <p>Inga resultat hittades.</p>
+}
