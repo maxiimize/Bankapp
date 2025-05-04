@@ -48,7 +48,7 @@
                     @foreach (var customer in Model.SearchResult.Items)
                     {
                         <tr>
-                            <td>@customer.CustomerId</td>
+                            <td><a href="/Customers/CustomerDetails?CustomerId=@customer.CustomerId">@customer.CustomerId</a> </td>
                             <td>@customer.NationalId</td>
                             <td>@customer.GivenName @customer.Surname</td>
                             <td>@customer.StreetAddress</td>
