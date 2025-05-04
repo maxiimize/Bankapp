@@ -69,7 +69,8 @@ namespace Services.Services
                     NationalId = c.NationalId ?? "",
                     StreetAddress = c.Streetaddress,
                     City = c.City
-                }).ToList();
+                })
+                .ToList();
 
             return new PagedResult<CustomerSearchViewModel>
             {

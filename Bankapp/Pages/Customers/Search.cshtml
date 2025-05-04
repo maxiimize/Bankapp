@@ -1,49 +1,85 @@
 ﻿@page
 @model Bankapp.Pages.Customers.SearchModel
+@{
+    ViewData["Title"] = "Kundsök";
+}
 
-<h2>Sök kunder</h2>
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-heading text-uppercase">Sök kunder</h2>
+            <h3 class="section-subheading text-muted">Sök på förnamn, efternamn eller stad</h3>
+        </div>
 
-<form method="get">
-    <input type="text" name="Name" value="@Model.Name" placeholder="Förnamn eller efternamn" />
-    <input type="text" name="City" value="@Model.City" placeholder="Stad" />
-    <button type="submit">Sök</button>
-</form>
+        <form method="get" class="row g-3 justify-content-center mb-4">
+            <div class="col-md-4">
+                <input type="text" name="Name" value="@Model.Name" class="form-control" placeholder="Förnamn eller efternamn" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="City" value="@Model.City" class="form-control" placeholder="Stad" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Sök</button>
+            </div>
+        </form>
 
-@if (Model.SearchResult != null && Model.SearchResult.Items.Any())
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Kundnummer</th>
-                <th>Personnummer</th>
-                <th>Namn</th>
-                <th>Adress</th>
-                <th>Stad</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var customer in Model.SearchResult.Items)
-            {
-                <tr>
-                    <td>@customer.CustomerId</td>
-                    <td>@customer.NationalId</td>
-                    <td>@customer.GivenName @customer.Surname</td>
-                    <td>@customer.StreetAddress</td>
-                    <td>@customer.City</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-
-    <div>
-        Sida @Model.PageNumber
-        @if (Model.SearchResult.Items.Count == 50)
+        @if (Model.SearchResult != null && Model.SearchResult.Items.Any())
         {
-            <a href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">Nästa sida</a>
+            <div class="mb-3 text-end text-muted">
+                Visar kunder @((Model.PageNumber - 1) * Model.SearchResult.PageSize + 1)
+                –
+                @(Math.Min(Model.PageNumber * Model.SearchResult.PageSize, Model.SearchResult.TotalItems))
+                av totalt @Model.SearchResult.TotalItems
+            </div>
+
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Kundnummer</th>
+                        <th>Personnummer</th>
+                        <th>Namn</th>
+                        <th>Adress</th>
+                        <th>Stad</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customer in Model.SearchResult.Items)
+                    {
+                        <tr>
+                            <td>@customer.CustomerId</td>
+                            <td>@customer.NationalId</td>
+                            <td>@customer.GivenName @customer.Surname</td>
+                            <td>@customer.StreetAddress</td>
+                            <td>@customer.City</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    @if (Model.PageNumber > 1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber - 1)">Föregående</a>
+                        </li>
+                    }
+                    <li class="page-item disabled">
+                        <a class="page-link">@Model.PageNumber</a>
+                    </li>
+                    @if (Model.SearchResult.Items.Count == Model.SearchResult.PageSize)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">Nästa</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Name) || !string.IsNullOrWhiteSpace(Model.City))
+        {
+            <p class="text-center">Inga resultat hittades för din sökning.</p>
         }
     </div>
-}
-else
-{
-    <p>Inga resultat hittades.</p>
-}
+</section>
