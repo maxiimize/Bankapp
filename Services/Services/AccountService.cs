@@ -28,6 +28,7 @@ namespace Services.Services
                     Frequency = a.Frequency,
                     Balance = a.Balance,
                     Created = a.Created,
+                    CustomerId = a.Dispositions.FirstOrDefault().CustomerId,
                     Transactions = a.Transactions
                         .OrderByDescending(t => t.Date)
                         .Select(t => new TransactionVM
@@ -36,12 +37,15 @@ namespace Services.Services
                             Amount = t.Amount,
                             Type = t.Type,
                             Operation = t.Operation,
-                            Bank = t.Bank
+                            Bank = t.Bank,
+                            Balance = t.Balance 
                         }).ToList()
                 }).FirstOrDefault();
 
             return account;
         }
+
+
 
         public void Deposit(int accountId, decimal amount)
         {

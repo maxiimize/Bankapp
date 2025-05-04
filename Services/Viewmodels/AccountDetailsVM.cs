@@ -7,5 +7,6 @@
         public decimal Balance { get; set; }
         public DateOnly Created { get; set; }
         public List<TransactionVM> Transactions { get; set; } = new();
+        public int CustomerId { get; set; }
     }
 }

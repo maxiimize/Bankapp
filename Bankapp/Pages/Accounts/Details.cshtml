@@ -1,0 +1,58 @@
+﻿@page
+@model Bankapp.Pages.Accounts.DetailsModel
+@{
+    ViewData["Title"] = "Kontodetaljer";
+}
+
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-heading text-uppercase">Kontobild</h2>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">Konto @Model.Account.AccountId</h5>
+                <p><strong>Saldo:</strong> @Model.Account.Balance.ToString("C")</p>
+                <p><strong>Frekvens:</strong> @Model.Account.Frequency</p>
+            </div>
+        </div>
+
+        <a class="btn btn-secondary" href="/Customers/Search">Tillbaka till kundsök</a>
+
+        <h5>Transaktioner</h5>
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Datum</th>
+                    <th>Typ</th>
+                    <th>Operation</th>
+                    <th>Belopp</th>
+                    <th>Saldo efter transaktion</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tx in Model.Account.Transactions)
+                {
+                    <tr>
+                        <td>@tx.Date.ToString("yyyy-MM-dd")</td>
+                        <td>@tx.Type</td>
+                        <td>@tx.Operation</td>
+                        <td>@tx.Amount.ToString("C")</td>
+                        <td>
+                            @if (tx.Balance == 0)
+                            {
+                                <span class="text-muted">Okänt saldo</span>
+                            }
+                            else
+                            {
+                                @tx.Balance.ToString("C")
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</section>
