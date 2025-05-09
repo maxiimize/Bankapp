@@ -3,6 +3,9 @@
 @{
     ViewData["Title"] = "Home page";
 }
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 
 
@@ -30,7 +33,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card text-white bg-warning">
                     <div class="card-body">
-                        <h5 class="card-title">Summa Saldon per Land</h5>
+                        <h5 class="card-title">Summa Saldo</h5>
                         <p class="card-text">
                             Totalt saldo: @Model.Statistics.TotalBalancePerCountry.Values.Sum().ToString("C")
                         </p>
@@ -42,9 +45,47 @@
 </section>
 
 
+<!-- Statistik per land -->
+<section class="page-section bg-white" id="countryStats">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-heading text-uppercase">Statistik per land</h2>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark text-center">
+                    <tr>
+                        <th>Land</th>
+                        <th>Antal kunder</th>
+                        <th>Antal konton</th>
+                        <th>Totalt saldo</th>
+                    </tr>
+                </thead>
+                <tbody class="text-center">
+                    @foreach (var stat in Model.CountryStats)
+                    {
+                        <tr>
+                            <td>@stat.Country</td>
+                            <td>@stat.TotalCustomers</td>
+                            <td>@stat.TotalAccounts</td>
+                            <td>@stat.TotalBalance.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+
 <!-- Sökknapp-->
-<div class="text-center my-4">
-    <a class="btn btn-primary btn-lg" href="/Customers/Search">Gå till kundsök</a>
-</div>
+@if (SignInManager.IsSignedIn(User) && (User.IsInRole("Admin") || User.IsInRole("Cashier")))
+{
+    <div class="text-center my-4">
+        <a class="btn btn-primary btn-lg" href="/Customers/Search">Gå till kundsök</a>
+    </div>
+}
+
 
 

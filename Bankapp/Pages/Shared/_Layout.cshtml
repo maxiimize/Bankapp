@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿ @using Microsoft.AspNetCore.Identity
+ @inject SignInManager<IdentityUser> SignInManager
+ @inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,11 +27,8 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav text-uppercase ms-auto py-4 py-lg-0">
-                    <!-- Remove all links except login, register, and user menu -->
+                 
                     <li class="nav-item">
-                        @using Microsoft.AspNetCore.Identity
-                        @inject SignInManager<IdentityUser> SignInManager
-                        @inject UserManager<IdentityUser> UserManager
 
                         @if (SignInManager.IsSignedIn(User))
                         {
@@ -42,12 +43,12 @@
                         }
                     </li>
 
-                    <li class="nav-item">
-                        @if (!SignInManager.IsSignedIn(User))
-                        {
+                    @if (SignInManager.IsSignedIn(User) && User.IsInRole("Admin"))
+                    {
+                        <li class="nav-item">
                             <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                        }
-                    </li>
+                        </li>
+                    }
                 </ul>
             </div>
         </div>
