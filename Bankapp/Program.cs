@@ -38,6 +38,16 @@ namespace Bankapp
 
             using (var scope = app.Services.CreateScope())
             {
+                var dbContext = scope.ServiceProvider.
+                     GetRequiredService<BankAppDataContext>();
+                if (dbContext.Database.IsRelational())
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
+
+            using (var scope = app.Services.CreateScope())
+            {
                 scope.ServiceProvider.GetService<DataInitializer>().SeedData();
             }
 
