@@ -58,19 +58,24 @@ namespace Services.Services
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             var customers = query
-                .OrderBy(c => c.CustomerId)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
-                .Select(c => new CustomerSearchViewModel
-                {
-                    CustomerId = c.CustomerId,
-                    GivenName = c.Givenname,
-                    Surname = c.Surname,
-                    NationalId = c.NationalId ?? "",
-                    StreetAddress = c.Streetaddress,
-                    City = c.City
-                })
-                .ToList();
+            .OrderBy(c => c.CustomerId)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .Select(c => new CustomerSearchViewModel
+            {
+                CustomerId = c.CustomerId,
+                GivenName = c.Givenname,
+                Surname = c.Surname,
+                NationalId = c.NationalId ?? "",
+                StreetAddress = c.Streetaddress,
+                City = c.City,
+                AccountId = c.Dispositions
+                    .Where(d => d.AccountId != null)
+                    .Select(d => d.AccountId)
+                    .FirstOrDefault()
+            })
+            .ToList();
+
 
             return new PagedResult<CustomerSearchViewModel>
             {

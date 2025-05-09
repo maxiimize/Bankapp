@@ -42,26 +42,31 @@
                         <th>Namn</th>
                         <th>Adress</th>
                         <th>Stad</th>
+                        <th>Åtgärder</th> <!-- 🆕 Ny kolumn -->
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var customer in Model.SearchResult.Items)
                     {
                         <tr>
-                            <td><a href="/Customers/CustomerDetails?CustomerId=@customer.CustomerId">@customer.CustomerId</a> </td>
+                            <td><a href="/Customers/CustomerDetails?CustomerId=@customer.CustomerId">@customer.CustomerId</a></td>
                             <td>@customer.NationalId</td>
                             <td>@customer.GivenName @customer.Surname</td>
                             <td>@customer.StreetAddress</td>
                             <td>@customer.City</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary"
+                                   href="/Accounts/Transfer?fromAccountId=@customer.CustomerId">
+                                    Utför transaktion
+                                </a>
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
 
-
             <nav>
                 <ul class="pagination justify-content-center">
-
                     <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
                         <a class="page-link"
                            href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber - 1)">
@@ -83,7 +88,6 @@
                     </li>
                 </ul>
             </nav>
-
         }
         else if (!string.IsNullOrWhiteSpace(Model.Name) || !string.IsNullOrWhiteSpace(Model.City))
         {
