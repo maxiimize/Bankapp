@@ -1,0 +1,53 @@
+﻿@page
+@model Bankapp.Pages.Accounts.TransferModel
+@{
+    ViewData["Title"] = "Hantera Transaktion";
+}
+
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-heading text-uppercase">Transaktion</h2>
+            <h3 class="section-subheading text-muted">Genomför en insättning, uttag eller överföring</h3>
+        </div>
+
+        <div class="mb-4 text-end">
+            <a class="btn btn-secondary" href="/Customers/Search">Tillbaka till kundsök</a>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="alert alert-info">@Model.Message</div>
+        }
+
+        <form method="post" class="row g-3">
+            <div class="col-md-4">
+                <label class="form-label">Typ av transaktion</label>
+                <select class="form-select" asp-for="TransactionType">
+                    <option value="Deposit">Insättning</option>
+                    <option value="Withdraw">Uttag</option>
+                    <option value="Transfer">Överföring</option>
+                </select>
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Från konto (vid uttag/överföring)</label>
+                <input class="form-control" asp-for="FromAccountId" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Till konto (vid insättning/överföring)</label>
+                <input class="form-control" asp-for="ToAccountId" />
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Belopp</label>
+                <input class="form-control" asp-for="Amount" />
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Genomför</button>
+            </div>
+        </form>
+    </div>
+</section>

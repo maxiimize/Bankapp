@@ -86,12 +86,13 @@ namespace Services.Services
                 Amount = amount,
                 Balance = account.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Deposit",
+                Type = "Credit",
                 Operation = "Cash deposit"
             });
 
             _context.SaveChanges();
         }
+
 
         public void Withdraw(int accountId, decimal amount)
         {
@@ -112,12 +113,13 @@ namespace Services.Services
                 Amount = -amount,
                 Balance = account.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Withdrawal",
+                Type = "Debit",
                 Operation = "Cash withdrawal"
             });
 
             _context.SaveChanges();
         }
+
 
         public void Transfer(int fromAccountId, int toAccountId, decimal amount)
         {
@@ -142,8 +144,8 @@ namespace Services.Services
                 Amount = -amount,
                 Balance = fromAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Transfer Out",
-                Operation = "Transfer to account " + toAccountId
+                Type = "Debit", 
+                Operation = $"Transfer to account {toAccountId}"
             });
 
             _context.Transactions.Add(new Transaction
@@ -152,8 +154,8 @@ namespace Services.Services
                 Amount = amount,
                 Balance = toAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Transfer In",
-                Operation = "Transfer from account " + fromAccountId
+                Type = "Credit", 
+                Operation = $"Transfer from account {fromAccountId}"
             });
 
             _context.SaveChanges();
