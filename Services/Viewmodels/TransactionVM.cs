@@ -7,5 +7,6 @@
         public string Type { get; set; }
         public string Operation { get; set; }
         public string? Bank { get; set; }
+        public decimal Balance { get; set; } 
     }
 }

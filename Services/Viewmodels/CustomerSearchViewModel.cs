@@ -14,6 +14,7 @@ namespace Services.Viewmodels
         public string? NationalId { get; set; }
         public string StreetAddress { get; set; }
         public string City { get; set; }
+        public int? AccountId { get; set; }
+
     }
 }
-

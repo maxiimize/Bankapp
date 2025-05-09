@@ -1,0 +1,21 @@
+﻿@model List<Services.Viewmodels.TransactionVM>
+
+@foreach (var tx in Model)
+{
+    <tr>
+        <td>@tx.Date.ToString("yyyy-MM-dd")</td>
+        <td>@tx.Type</td>
+        <td>@tx.Operation</td>
+        <td>@tx.Amount.ToString("C")</td>
+        <td>
+            @if (tx.Balance == 0)
+            {
+                <span class="text-muted">0</span>
+            }
+            else
+            {
+                @tx.Balance.ToString("C")
+            }
+        </td>
+    </tr>
+}

@@ -20,6 +20,10 @@ public class IndexModel : PageModel
     public void OnGet()
     {
         Statistics = _statisticsService.GetStatistics();
+        CountryStats = _statisticsService.GetCountryStatistics();
     }
+
+    public List<CountryStatisticsViewModel> CountryStats { get; set; } = new();
+
 }
 

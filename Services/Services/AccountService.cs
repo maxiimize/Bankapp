@@ -18,7 +18,7 @@ namespace Services.Services
             _context = context;
         }
 
-        public AccountDetailsVM GetAccountDetails(int accountId)
+        public AccountDetailsVM GetAccountDetails(int accountId, int skip, int take)
         {
             var account = _context.Accounts
                 .Where(a => a.AccountId == accountId)
@@ -28,20 +28,47 @@ namespace Services.Services
                     Frequency = a.Frequency,
                     Balance = a.Balance,
                     Created = a.Created,
+                    CustomerId = a.Dispositions.FirstOrDefault().CustomerId,
+                    TotalTransactionCount = a.Transactions.Count,
                     Transactions = a.Transactions
                         .OrderByDescending(t => t.Date)
+                        .Skip(skip)
+                        .Take(take)
                         .Select(t => new TransactionVM
                         {
                             Date = t.Date,
                             Amount = t.Amount,
                             Type = t.Type,
                             Operation = t.Operation,
-                            Bank = t.Bank
+                            Bank = t.Bank,
+                            Balance = t.Balance
                         }).ToList()
                 }).FirstOrDefault();
 
             return account;
         }
+
+        public List<TransactionVM> GetTransactions(int accountId, int skip, int take)
+        {
+            return _context.Transactions
+                .Where(t => t.AccountId == accountId)
+                .OrderByDescending(t => t.Date)
+                .Skip(skip)
+                .Take(take)
+                .Select(t => new TransactionVM
+                {
+                    Date = t.Date,
+                    Amount = t.Amount,
+                    Type = t.Type,
+                    Operation = t.Operation,
+                    Bank = t.Bank,
+                    Balance = t.Balance
+                }).ToList();
+        }
+
+
+
+
 
         public void Deposit(int accountId, decimal amount)
         {
@@ -59,12 +86,13 @@ namespace Services.Services
                 Amount = amount,
                 Balance = account.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Deposit",
+                Type = "Credit",
                 Operation = "Cash deposit"
             });
 
             _context.SaveChanges();
         }
+
 
         public void Withdraw(int accountId, decimal amount)
         {
@@ -85,12 +113,13 @@ namespace Services.Services
                 Amount = -amount,
                 Balance = account.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Withdrawal",
+                Type = "Debit",
                 Operation = "Cash withdrawal"
             });
 
             _context.SaveChanges();
         }
+
 
         public void Transfer(int fromAccountId, int toAccountId, decimal amount)
         {
@@ -115,8 +144,8 @@ namespace Services.Services
                 Amount = -amount,
                 Balance = fromAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Transfer Out",
-                Operation = "Transfer to account " + toAccountId
+                Type = "Debit", 
+                Operation = $"Transfer to account {toAccountId}"
             });
 
             _context.Transactions.Add(new Transaction
@@ -125,8 +154,8 @@ namespace Services.Services
                 Amount = amount,
                 Balance = toAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Transfer In",
-                Operation = "Transfer from account " + fromAccountId
+                Type = "Credit", 
+                Operation = $"Transfer from account {fromAccountId}"
             });
 
             _context.SaveChanges();
