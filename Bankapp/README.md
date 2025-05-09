@@ -50,3 +50,6 @@ Bootstrap 5
 JavaScript / AJAX
 
 Git och GitHub
+
+
+Azure: Fastnade tyvärr vid 500.30 error :(
