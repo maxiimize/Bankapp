@@ -4,11 +4,24 @@
     ViewData["Title"] = "Logga in";
 }
 
+<style>
+    #mainNav {
+        display: none !important;
+    }
+</style>
+
+
 <div class="container d-flex align-items-center justify-content-center" style="min-height: 100vh;">
     <div class="col-md-6 col-lg-5">
         <div class="card shadow-lg border-0">
             <div class="card-body p-4">
                 <h3 class="text-center mb-4">Välkommen till BTS Bank</h3>
+
+                <div class="text-center mb-3">
+                    <a href="/" class="btn btn-outline-secondary">
+                        <i class="fas fa-home me-1"></i> Till startsidan
+                    </a>
+                </div>
 
                 <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
