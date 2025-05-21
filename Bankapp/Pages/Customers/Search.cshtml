@@ -1,0 +1,109 @@
+﻿@page
+@model Bankapp.Pages.Customers.SearchModel
+@{
+    ViewData["Title"] = "Kundsök";
+}
+
+<style>
+    #mainNav {
+        display: none !important;
+    }
+</style>
+
+
+<section class="page-section bg-light">
+    <div class="container">
+        <div class="text-center mb-4">
+            <h2 class="section-heading text-uppercase">Sök kunder</h2>
+            <h3 class="section-subheading text-muted">Sök på förnamn, efternamn eller stad</h3>
+            <div class="text-center mb-4">
+                <a href="/" class="btn btn-outline-secondary">
+                    <i class="fas fa-home me-1"></i> Till startsidan
+                </a>
+            </div>
+        </div>
+
+        <form method="get" class="row g-3 justify-content-center mb-4">
+            <div class="col-md-4">
+                <input type="text" name="Name" value="@Model.Name" class="form-control" placeholder="Förnamn eller efternamn" />
+            </div>
+            <div class="col-md-4">
+                <input type="text" name="City" value="@Model.City" class="form-control" placeholder="Stad" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-1"></i> Sök
+                </button>
+            </div>
+        </form>
+
+        @if (Model.SearchResult != null && Model.SearchResult.Items.Any())
+        {
+            <div class="mb-3 text-end text-muted">
+                Visar kunder @((Model.PageNumber - 1) * Model.SearchResult.PageSize + 1)
+                –
+                @(Math.Min(Model.PageNumber * Model.SearchResult.PageSize, Model.SearchResult.TotalItems))
+                av totalt @Model.SearchResult.TotalItems
+            </div>
+
+            <table class="table table-striped table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Kundnummer</th>
+                        <th>Personnummer</th>
+                        <th>Namn</th>
+                        <th>Adress</th>
+                        <th>Stad</th>
+                        <th>Åtgärder</th> <!-- 🆕 Ny kolumn -->
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var customer in Model.SearchResult.Items)
+                    {
+                        <tr>
+                            <td><a href="/Customers/CustomerDetails?CustomerId=@customer.CustomerId">@customer.CustomerId</a></td>
+                            <td>@customer.NationalId</td>
+                            <td>@customer.GivenName @customer.Surname</td>
+                            <td>@customer.StreetAddress</td>
+                            <td>@customer.City</td>
+                            <td>
+                                <a class="btn btn-sm btn-outline-primary"
+                                   href="/Accounts/Transfer?fromAccountId=@customer.CustomerId">
+                                    Utför transaktion
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
+                        <a class="page-link"
+                           href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber - 1)">
+                            Föregående
+                        </a>
+                    </li>
+
+                    <li class="page-item disabled">
+                        <span class="page-link">
+                            Sida @Model.PageNumber av @Math.Max(1, Math.Ceiling((double)Model.SearchResult.TotalItems / Model.SearchResult.PageSize))
+                        </span>
+                    </li>
+
+                    <li class="page-item @(Model.PageNumber * Model.SearchResult.PageSize >= Model.SearchResult.TotalItems ? "disabled" : "")">
+                        <a class="page-link"
+                           href="?Name=@Model.Name&City=@Model.City&PageNumber=@(Model.PageNumber + 1)">
+                            Nästa
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        }
+        else if (!string.IsNullOrWhiteSpace(Model.Name) || !string.IsNullOrWhiteSpace(Model.City))
+        {
+            <p class="text-center">Inga resultat hittades för din sökning.</p>
+        }
+    </div>
+</section>

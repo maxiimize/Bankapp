@@ -1,20 +1,29 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Services.Services;
+using Services.Viewmodels;
+using Services.Interfaces;
 
-namespace Bankapp.Pages
+namespace Bankapp.Pages;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly IStatisticsService _statisticsService;
+
+    public StatisticsVM Statistics { get; set; }
+
+    public IndexModel(IStatisticsService statisticsService)
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
+        _statisticsService = statisticsService;
     }
+
+    public void OnGet()
+    {
+        Statistics = _statisticsService.GetStatistics();
+        CountryStats = _statisticsService.GetCountryStatistics();
+    }
+
+    public List<CountryStatisticsViewModel> CountryStats { get; set; } = new();
+
 }
+

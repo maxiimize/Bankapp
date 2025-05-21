@@ -1,0 +1,66 @@
+﻿
+
+/* För Identity-sidorna */
+body.bg-light {
+    background-color: #f4f4f9 !important;
+}
+
+.navbar-dark.bg-primary {
+    background-color: black !important;
+}
+
+.navbar .nav-link {
+    color: white !important;
+    transition: color 0.3s ease;
+}
+
+    .navbar .nav-link:hover, .navbar .nav-link:focus {
+        color: white !important;
+    }
+
+footer.bg-dark {
+    background-color: #343a40 !important;
+}
+
+footer .container {
+    text-align: center;
+}
+
+/* Styla formulär för inloggning och registrering */
+.form-control {
+    border-radius: 0.25rem;
+}
+
+.btn-primary {
+    background-color: #1b6ec2;
+    border-color: #1861ac;
+}
+
+    .btn-primary:hover {
+        background-color: #1861ac;
+        border-color: #1b6ec2;
+    }
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    background-color: #fff;
+}
+
+.card-header {
+    font-size: 1.5rem;
+    font-weight: bold;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #ddd;
+}
+
+.card-body {
+    background-color: #f9f9f9;
+}
+
+h2 {
+    font-size: 1.75rem;
+    color: #333;
+}

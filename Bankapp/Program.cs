@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Services.Interfaces;
+using Services.Services;
 
 namespace Bankapp
 {
@@ -11,7 +13,13 @@ namespace Bankapp
 
             var builder = WebApplication.CreateBuilder(args);
 
-            
+            builder.Services.AddScoped<IStatisticsService, StatisticsService>();
+            builder.Services.AddScoped<ICustomerService, CustomerService>();
+            builder.Services.AddScoped<IAccountService, AccountService>();
+
+
+            builder.Services.AddRazorPages();
+
 
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
@@ -27,6 +35,16 @@ namespace Bankapp
             builder.Services.AddTransient<DataInitializer>();
 
             var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.
+                     GetRequiredService<BankAppDataContext>();
+                if (dbContext.Database.IsRelational())
+                {
+                    dbContext.Database.Migrate();
+                }
+            }
 
             using (var scope = app.Services.CreateScope())
             {

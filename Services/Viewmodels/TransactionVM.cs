@@ -1,4 +1,4 @@
-﻿namespace Bankapp.Viewmodels
+﻿namespace Services.Viewmodels
 {
     public class TransactionVM
     {
@@ -7,5 +7,6 @@
         public string Type { get; set; }
         public string Operation { get; set; }
         public string? Bank { get; set; }
+        public decimal Balance { get; set; } 
     }
 }
