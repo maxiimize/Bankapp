@@ -3,6 +3,10 @@
 @{
     ViewData["Title"] = "Kundbild";
 }
+@{
+    Layout = "/Pages/Shared/_Layout_No_Nav.cshtml";
+}
+
 
 <section class="page-section bg-light">
     <div class="container">
@@ -10,15 +14,15 @@
             <h2 class="section-heading text-uppercase">Kundbild</h2>
         </div>
 
-        <div class="card mb-4">
-            <div class="card-body">
-                <h5 class="card-title">Kundinformation</h5>
-                <p><strong>Kundnummer:</strong> @Model.Customer.CustomerId</p>
-                <p><strong>Namn:</strong> @Model.Customer.Givenname @Model.Customer.Surname</p>
-                <p><strong>Adress:</strong> @Model.Customer.Streetaddress, @Model.Customer.City</p>
-                <p><strong>Totalt saldo:</strong> @Model.Customer.TotalBalance.ToString("C")</p>
-            </div>
+        <div class="card-body">
+            <h5 class="card-title">Kundinformation</h5>
+            <p><strong>Kundnummer:</strong> @Model.Customer.CustomerId</p>
+            <p><strong>Personnummer:</strong> @Model.Customer.NationalId</p>
+            <p><strong>Namn:</strong> @Model.Customer.Givenname @Model.Customer.Surname</p>
+            <p><strong>Adress:</strong> @Model.Customer.Streetaddress, @Model.Customer.City</p>
+            <p><strong>Totalt saldo:</strong> @Model.Customer.TotalBalance.ToString("C")</p>
         </div>
+
 
         <h5>Konton</h5>
         <table class="table table-striped table-hover">

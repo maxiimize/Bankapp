@@ -9,6 +9,11 @@ namespace Bankapp.Pages.Customers
     {
         private readonly ICustomerService _customerService;
 
+        [BindProperty(SupportsGet = true)]
+        public int? CustomerId { get; set; }
+
+
+
         public SearchModel(ICustomerService customerService)
         {
             _customerService = customerService;
@@ -25,9 +30,13 @@ namespace Bankapp.Pages.Customers
 
         public PagedResult<CustomerSearchViewModel> SearchResult { get; set; }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            if (CustomerId.HasValue)
+            return RedirectToPage("CustomerDetails", new { CustomerId });
+
             SearchResult = _customerService.SearchCustomers(Name, City, PageNumber, 50);
+            return Page();
         }
     }
 }
