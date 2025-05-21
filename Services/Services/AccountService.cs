@@ -126,6 +126,7 @@ namespace Services.Services
             if (amount <= 0)
                 throw new Exception("Beloppet måste vara större än 0.");
 
+            // Hämta konton
             var fromAccount = _context.Accounts.FirstOrDefault(a => a.AccountId == fromAccountId);
             var toAccount = _context.Accounts.FirstOrDefault(a => a.AccountId == toAccountId);
 
@@ -135,7 +136,9 @@ namespace Services.Services
             if (fromAccount.Balance < amount)
                 throw new Exception("Otillräckligt saldo på frånkontot.");
 
+            // 1) Dra av beloppet från källkontot  
             fromAccount.Balance -= amount;
+            // 2) Lägg till beloppet på målkontot  
             toAccount.Balance += amount;
 
             _context.Transactions.Add(new Transaction
@@ -144,7 +147,7 @@ namespace Services.Services
                 Amount = -amount,
                 Balance = fromAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Debit", 
+                Type = "Debit",
                 Operation = $"Transfer to account {toAccountId}"
             });
 
@@ -154,7 +157,7 @@ namespace Services.Services
                 Amount = amount,
                 Balance = toAccount.Balance,
                 Date = DateOnly.FromDateTime(DateTime.Now),
-                Type = "Credit", 
+                Type = "Credit",
                 Operation = $"Transfer from account {fromAccountId}"
             });
 
