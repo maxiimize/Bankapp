@@ -23,6 +23,7 @@ namespace Services.Services
                 .Select(c => new CustomerOverviewVM
                 {
                     CustomerId = c.CustomerId,
+                    NationalId = c.NationalId ?? "",
                     Givenname = c.Givenname,
                     Surname = c.Surname,
                     Streetaddress = c.Streetaddress,

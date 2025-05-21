@@ -9,5 +9,7 @@
         public string City { get; set; }
         public decimal TotalBalance { get; set; }
         public List<AccountSummaryVM> Accounts { get; set; } = new();
+        public string NationalId { get; set; }
+
     }
 }
