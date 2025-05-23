@@ -8,6 +8,8 @@ namespace Bankapp
 {
     public class Program
     {
+
+        //This version works
         public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
