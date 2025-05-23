@@ -22,7 +22,7 @@ Bootstrap-design med responsiv layout (gratis tema)
 
 Skydd mot ogiltig inmatning och otillåten åtkomst
 
-Driftsatt på Azure
+Driftsatt på Azure (Försökte)
 
 Roller och behörigheter:
 
@@ -52,4 +52,4 @@ JavaScript / AJAX
 Git och GitHub
 
 
-Azure: Fastnade tyvärr vid 500.30 error :(
+Azure: Försökte driftsätta till Azure men fick inte till det, 500.30. 
