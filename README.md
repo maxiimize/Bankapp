@@ -1,55 +1,187 @@
-BTS Banken � Adminsystem f�r bankpersonal
+# 🏦 BTS Bank - Administration System
 
-Detta �r ett administrativt banksystem byggt med ASP.NET Core Razor Pages och Entity Framework Core (Database First). Applikationen �r avsedd f�r bankpersonal � inte kunder � och erbjuder funktionalitet f�r att hantera kunder, konton, transaktioner och anv�ndare med rollbaserad inloggning.
+A comprehensive bank administration system built with ASP.NET Core Razor Pages and Entity Framework Core. This application is designed for bank staff (not customers) and provides functionality for managing customers, accounts, transactions, and users with role-based access control.
 
-Funktioner:
+![.NET](https://img.shields.io/badge/.NET-9.0-512BD4?logo=dotnet)
+![SQL Server](https://img.shields.io/badge/database-SQL%20Server-CC2927?logo=microsoft-sql-server)
 
-Inloggning med ASP.NET Core Identity
+## ✨ Features
 
-Rollbaserad �tkomstkontroll (Admin, Cashier)
+### 🔐 Authentication & Authorization
+- ASP.NET Core Identity integration
+- Role-based access control (Admin, Cashier)
+- Email confirmation support
 
-Statistikpanel p� startsidan (�ppen f�r alla)
+### 📊 Dashboard & Statistics
+- Real-time statistics panel on the homepage (publicly accessible)
+- Country-based financial statistics
+- Customer and account overview metrics
 
-S�kfunktion f�r kunder med paginering
+### 👥 Customer Management
+- Advanced customer search with pagination
+- Customer detail pages showing all associated accounts
+- Total balance calculation per customer
+- Customer profile editing
 
-Kunddetaljsida med konton och totala saldot
+### 💰 Account Management
+- Account detail pages with transaction history
+- Lazy loading for transactions via AJAX
+- Support for deposits, withdrawals, and transfers
+- Real-time balance updates
 
-Kontosida med transaktionshistorik och lazy loading via AJAX
+### 🎨 User Interface
+- Responsive Bootstrap 5 design
+- Clean and intuitive layout
+- Mobile-friendly interface
 
-M�jlighet att utf�ra ins�ttningar, uttag och �verf�ringar
+### 🔒 Security
+- Input validation and sanitization
+- Protection against unauthorized access
+- Role-based page restrictions
 
-Bootstrap-design med responsiv layout (gratis tema)
+## 👤 User Roles & Permissions
 
-Skydd mot ogiltig inmatning och otill�ten �tkomst
+| Role | Permissions |
+|------|-------------|
+| **Admin** | Full access including user management and registration |
+| **Cashier** | Customer and account management only |
+| **Anonymous** | Access to homepage and statistics only |
 
-Driftsatt p� Azure (F�rs�kte)
+## 🔑 Seeded Users
 
-Roller och beh�righeter:
+For testing purposes, the following users are pre-configured:
 
-Admin � Full �tkomst inklusive anv�ndarhantering och registrering
-Cashier � Endast kund- och kontohantering
-Anonym � Endast tillg�ng till startsidan
+| Email | Password | Role |
+|-------|----------|------|
+| richard.chalk@admin.se | `Abc123#` | Admin |
+| richard.chalk@cashier.se | `Abc123#` | Cashier |
 
-Seedade anv�ndare:
+## 🛠️ Technology Stack
 
-richard.chalk@admin.se | L�senord: Abc123# | Roll: Admin
-richard.chalk@cashier.se | L�senord: Abc123# | Roll: Cashier
+### Backend
+- **ASP.NET Core 9.0** - Web framework
+- **Razor Pages** - UI framework
+- **Entity Framework Core 9.0** - ORM (Database First approach)
+- **SQL Server** - Database
+- **ASP.NET Core Identity** - Authentication & authorization
 
-Tekniker som anv�nds:
+### Frontend
+- **Bootstrap 5** - CSS framework
+- **JavaScript/AJAX** - Dynamic content loading
+- **HTML5 & CSS3** - Markup and styling
 
-ASP.NET Core Razor Pages
+### Architecture
+- **Three-tier architecture**
+  - `Bankapp` - Presentation layer (Razor Pages)
+  - `Services` - Business logic layer
+  - `DataAccessLayer` - Data access and models
 
-Entity Framework Core (Database First)
+## 🚀 Getting Started
 
-SQL Server
+### Prerequisites
 
-ASP.NET Core Identity
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/download)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads) (LocalDB, Express, or full version)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/) or [Visual Studio Code](https://code.visualstudio.com/)
 
-Bootstrap 5
+### Installation
 
-JavaScript / AJAX
+#### 1. Clone the repository
 
-Git och GitHub
+```bash
+git clone https://github.com/maxiimize/Bankapp.git
+cd Bankapp
+```
 
+#### 2. Update the connection string
 
-Azure: F�rs�kte drifts�tta till Azure men fick inte till det, 500.30. 
+Edit `appsettings.json` in the `Bankapp` folder:
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=(localdb)\\mssqllocaldb;Database=BankAppDB;Trusted_Connection=True;MultipleActiveResultSets=true"
+  }
+}
+```
+
+#### 3. Apply database migrations
+
+```bash
+dotnet ef database update --project DataAccessLayer
+```
+
+#### 4. Run the application
+
+```bash
+cd Bankapp
+dotnet run
+```
+
+#### 5. Access the application
+
+Open your browser and navigate to `https://localhost:5001` (or the port shown in the console)
+
+## 📁 Project Structure
+
+```
+Bankapp-1/
+├── Bankapp/                    # Main web application
+│   ├── Pages/                  # Razor Pages
+│   │   ├── Accounts/          # Account management pages
+│   │   ├── Customers/         # Customer management pages
+│   │   └── Shared/            # Shared layouts and partials
+│   ├── wwwroot/               # Static files (CSS, JS, images)
+│   └── Program.cs             # Application entry point
+├── DataAccessLayer/           # Data access layer
+│   ├── Models/                # Entity models
+│   ├── Migrations/            # EF Core migrations
+│   └── BankAppDataContext.cs  # Database context
+└── Services/                  # Business logic layer
+    ├── Interfaces/            # Service interfaces
+    ├── Services/              # Service implementations
+    └── Viewmodels/            # View models
+```
+
+## 🗺️ Key Pages
+
+- `/` - Homepage with statistics dashboard
+- `/Customers/Search` - Search and browse customers
+- `/Customers/CustomerDetails` - View customer details and accounts
+- `/Accounts/Details` - View account transactions
+- `/Accounts/Transfer` - Perform account transfers
+- `/Administration` - User management (Admin only)
+
+## 🔄 Development Notes
+
+- The application uses Database First approach with Entity Framework Core
+- Migrations are automatically applied on application startup
+- Data seeding occurs during first run via `DataInitializer`
+- AJAX is used for lazy loading transaction history for better performance
+  
+
+## 📝 Future Enhancements
+
+- Complete Azure deployment configuration
+- Add transaction export to PDF/Excel
+- Implement email notifications
+- Add two-factor authentication
+- Enhanced reporting and analytics
+- Audit logging for all transactions
+
+## 📄 License
+
+This project was created for educational purposes.
+
+## 👨‍💻 Author
+
+**Maxiimize**
+
+## 🙏 Acknowledgments
+
+- Built as part of a learning project for ASP.NET Core development
+- Bootstrap theme used for responsive design
+
+---
+
+**BTS Bank** - *Professional Banking Administration Made Simple*
